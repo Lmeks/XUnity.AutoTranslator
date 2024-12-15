@@ -22,8 +22,19 @@ namespace XUnity.AutoTranslator.Plugin.Core.Utilities
          bool escapeNext = false;
          var len = str.Length;
          var builder = new StringBuilder( (int)( len / 1.3 ) );
-         for( int i = 0; i < len; i++ )
+         var sidx = 0;
+         if( str.StartsWith( "sr:" ) || str.StartsWith( "r:" ) )
          {
+            sidx = str.LastIndexOf( @"""=" ) + 2;
+            if( sidx < 3 )
+            {
+               return null;
+            }
+            lines[ 0 ] = str.Substring( 0, sidx - 1 );
+            lidx++;
+         }
+         for( int i = sidx; i < len; i++ )
+         { 
             var c = str[ i ];
             if( escapeNext )
             {
